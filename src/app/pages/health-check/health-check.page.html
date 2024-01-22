@@ -1,0 +1,373 @@
+<ion-header class="ion-no-border">
+	<div [ngClass]="{'ion-gradient-transparent': selectedTab == 'new', 'ion-gradient': selectedTab == 'past'}">
+		<ion-toolbar class="transparent side-button">
+			<ion-buttons slot="start">
+				<ion-menu-button>
+					<ion-icon src="/assets/icon/menu.svg" size="small"></ion-icon>
+				</ion-menu-button>
+			</ion-buttons>
+			<ion-buttons slot="end" class="bell-button" [routerLink]="['/tabs/notification']">
+				<ion-badge class="notification-count-badge">
+					<span>{{unReadCount}}</span>
+				</ion-badge>
+				<ion-icon src="/assets/icon/bell.svg"></ion-icon>
+			</ion-buttons>
+		</ion-toolbar>
+		<ion-toolbar class="transparent ion-toolbar-title">
+			<ion-title>Self Health Check</ion-title>
+		</ion-toolbar>
+
+		<!-- Segment with anchors -->
+		<div class="segment-tab">
+			<ion-segment [(ngModel)]="selectedTab">
+				<ion-segment-button (click)="segmentChanged(selectedTab)" value="new" [disabled]="isSelfCheckTaken">
+					<ion-label>New Check-up</ion-label>
+				</ion-segment-button>
+				<ion-segment-button (click)="segmentChanged(selectedTab)" value="past">
+					<ion-label>Past Check-ups</ion-label>
+				</ion-segment-button>
+			</ion-segment>
+		</div>
+	</div>
+
+	<!-- Sort -->
+	<ion-toolbar class="ion-toolbar-sort" [ngClass]="{'ion-hide': selectedTab == 'new'}">
+		<ion-item class="right-border" lines="none" slot="start">
+			<ion-icon src="/assets/icon/calendar.svg" slot="start" class="ion-icon"></ion-icon>
+			<ion-datetime [(ngModel)]="fromDate" [displayFormat]="datedisplayFormat" [pickerFormat]="datepickerFormat"
+				(ionChange)="onDateChange()">
+			</ion-datetime>
+		</ion-item>
+		<ion-item lines="none" slot="end">
+			<ion-icon src="/assets/icon/calendar.svg" slot="start" class="ion-icon"></ion-icon>
+			<ion-datetime [(ngModel)]="toDate" [displayFormat]="datedisplayFormat" [pickerFormat]="datepickerFormat"
+				(ionChange)="onDateChange()">
+			</ion-datetime>
+		</ion-item>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen="true" [ngClass]="{'background-gradient': selectedTab == 'new'}">
+	<ion-grid>
+		<ion-row>
+			<ion-col size="12">
+				<div class="new" *ngIf="selectedTab == 'new'">
+					<!-- Text -->
+					<div class="question-title" *ngIf="selectedTab == 'new'">
+						<ion-text>
+							Please provide accurate answers to analyse your health condition to ensure employee safety.
+						</ion-text>
+					</div>
+					<!-- Answer -->
+					<div *ngIf="answers && answers.length > 0">
+						<ion-list>
+							<ion-item-group *ngFor="let item of answers">
+								<div class="dynamic-answer" *ngIf="!item.isReCheck">
+									<ion-item lines="none" detail="false" class="question">
+										<ion-icon slot="start" src="/assets/icon/right-success.svg"></ion-icon>
+										<ion-label class="ion-text-wrap">
+											{{item.question}}
+										</ion-label>
+									</ion-item>
+									<ion-item lines="none" detail="false" class="answer"
+										*ngIf="item.questionType == 'Boolean'">
+										<ion-text class="ion-text">
+											{{item.answer ? 'Yes' : 'No '}}
+										</ion-text>
+										<ion-button size="small" class="btn-check" (click)="onReCheckAnswer(item)"
+											[disabled]="item.isBtnDisabled">Recheck
+										</ion-button>
+									</ion-item>
+									<ion-item lines="none" detail="false" class="answer"
+										*ngIf="item.questionType == 'Numeric'">
+										<ion-text class="ion-text">
+											{{item.answer}}
+										</ion-text>
+										<ion-button size="small" class="btn-check" (click)="onReCheckAnswer(item)"
+											[disabled]="item.isBtnDisabled">Recheck
+										</ion-button>
+									</ion-item>
+									<ion-item lines="none" detail="false" class="answer"
+										*ngIf="item.questionType == 'FreeText'">
+										<ion-text class="ion-text">
+											{{item.answer}}
+										</ion-text>
+										<ion-button size="small" class="btn-check" (click)="onReCheckAnswer(item)"
+											[disabled]="item.isBtnDisabled">Recheck
+										</ion-button>
+									</ion-item>
+									<ion-item lines="none" detail="false" class="answer"
+										*ngIf="item.questionType == 'Date'">
+										<ion-text class="ion-text">
+											{{transformDate(item.answer, dateFormatPipe)}}
+										</ion-text>
+										<ion-button size="small" class="btn-check" (click)="onReCheckAnswer(item)"
+											[disabled]="item.isBtnDisabled">Recheck
+										</ion-button>
+									</ion-item>
+									<ion-item lines="none" detail="false" class="answer"
+										*ngIf="item.questionType == 'Time'">
+										<ion-text class="ion-text">
+											{{transformDate(item.answer, timeFormatPipe)}}
+										</ion-text>
+										<ion-button size="small" class="btn-check" (click)="onReCheckAnswer(item)"
+											[disabled]="item.isBtnDisabled">Recheck
+										</ion-button>
+									</ion-item>
+									<ion-item lines="none" detail="false" class="answer"
+										*ngIf="item.questionType == 'SingleChoice'">
+										<ion-label class="ion-text-wrap">
+											<div *ngFor="let subItem of item.surveyResponseChoices">
+												<ion-text *ngIf="subItem.optionId == item.answer">
+													<p class="ion-text">{{subItem.option}}</p>
+												</ion-text>
+											</div>
+										</ion-label>
+										<ion-button size="small" class="btn-check" (click)="onReCheckAnswer(item)"
+											[disabled]="item.isBtnDisabled">Recheck
+										</ion-button>
+									</ion-item>
+									<ion-item lines="none" detail="false" class="answer"
+										*ngIf="item.questionType == 'MultiChoice'">
+										<ion-label class="ion-text-wrap">
+											<ion-text *ngFor="let subItem of item.answer">
+												<div *ngFor="let subOptionItem of item.surveyResponseChoices">
+													<p class="ion-text"
+														*ngIf="subItem.surveyReplyChoiceId == subOptionItem.optionId">
+														{{subOptionItem.option}}
+													</p>
+												</div>
+											</ion-text>
+										</ion-label>
+										<ion-button size="small" class="btn-check" (click)="onReCheckAnswer(item)"
+											[disabled]="item.isBtnDisabled">Recheck
+										</ion-button>
+									</ion-item>
+								</div>
+								<div class="dynamic-question" *ngIf="item.isReCheck">
+									<ion-card class="question-recheck" *ngFor="let checkItem of reCheckAnswers">
+										<span class="dot"></span>
+										<ion-card-header>
+											{{checkItem.question}}
+										</ion-card-header>
+										<ion-card-content>
+											<form #reAnswerForm="ngForm">
+												<div class="yes-no" *ngIf="checkItem.questionType == 'Boolean'">
+													<ion-button size="small" class="btn-red"
+														(click)="onUpdateYesNo(checkItem, true)"
+														[disabled]="showLoaderReCheck">Yes
+													</ion-button>
+													<ion-button size="small" class="btn-green"
+														(click)="onUpdateYesNo(checkItem, false)"
+														[disabled]="showLoaderReCheck">No
+													</ion-button>
+												</div>
+												<div class="input" *ngIf="checkItem.questionType == 'Numeric'">
+													<ion-input type="number" class="form-control"
+														placeholder="Enter Number" id="number" required
+														[(ngModel)]="reAnswerForm.answer" name="number">
+													</ion-input>
+												</div>
+												<div class="text-area" *ngIf="checkItem.questionType == 'FreeText'">
+													<ion-textarea class="form-control" rows="2" cols="10"
+														placeholder="Enter short notes here..." id="freetext" required
+														[(ngModel)]="reAnswerForm.answer" name="freetext">
+													</ion-textarea>
+												</div>
+												<div class="date" *ngIf="checkItem.questionType == 'Date'">
+													<ion-datetime class="form-control"
+														[displayFormat]="datedisplayFormat"
+														[pickerFormat]="datepickerFormat" placeholder="Select Date"
+														id="date" required [(ngModel)]="reAnswerForm.answer"
+														name="date">
+													</ion-datetime>
+												</div>
+												<div class="time" *ngIf="checkItem.questionType == 'Time'">
+													<ion-datetime class="form-control"
+														[displayFormat]="timedisplayFormat"
+														[pickerFormat]="timepickerFormat" placeholder="Select Time"
+														id="time" required [(ngModel)]="reAnswerForm.answer"
+														name="time">
+													</ion-datetime>
+												</div>
+												<div class="multi-select"
+													*ngIf="checkItem.questionType == 'SingleChoice'">
+													<ion-item lines="none"
+														*ngFor="let subcheckItem of checkItem.surveyResponseChoices; let i = index">
+														<ion-label>{{subcheckItem.option}}
+														</ion-label>
+														<ion-checkbox slot="start" class="custom-checkbox"
+															name="singleselect" required [value]="subcheckItem.optionId"
+															[disabled]="subcheckItem.isChecked"
+															(ionChange)="onSingleSelect($event, subcheckItem.optionSetId, checkItem.surveyResponseChoices)">
+														</ion-checkbox>
+													</ion-item>
+												</div>
+												<div class="multi-select"
+													*ngIf="checkItem.questionType == 'MultiChoice'">
+													<ion-item lines="none"
+														*ngFor="let subcheckItem of checkItem.surveyResponseChoices; let i = index">
+														<ion-label>
+															{{subcheckItem.option}}
+														</ion-label>
+														<ion-checkbox slot="start" class="custom-checkbox"
+															name="multiselect" required [value]="subcheckItem.optionId"
+															[disabled]="subcheckItem.isChecked"
+															(ionChange)="onMultiSelect($event, subcheckItem.optionSetId, checkItem.surveyResponseChoices)">
+														</ion-checkbox>
+													</ion-item>
+												</div>
+												<ion-button type="button" size="small" class="btn-next"
+													(click)="onUpdateAnswer(checkItem, reAnswerForm)"
+													*ngIf="checkItem.questionType !== 'Boolean'"
+													[disabled]="showLoaderReCheck"
+													[disabled]="!reAnswerForm.valid"
+													[disabled]="checkItem.questionType == 'MultiChoice' ? multiSelectIds.length == 0 : ''"
+													[disabled]="checkItem.questionType == 'SingleChoice' ? singleSelectId == null : ''">
+													Submit
+												</ion-button>
+											</form>
+										</ion-card-content>
+									</ion-card>
+								</div>
+							</ion-item-group>
+						</ion-list>
+					</div>
+					<!-- Question -->
+					<div class="dynamic-question" *ngIf="question && question.length > 0">
+						<ion-card *ngFor="let item of question">
+							<span class="dot"></span>
+							<ion-card-header>
+								{{item.question}}
+							</ion-card-header>
+							<ion-card-content>
+								<form #answerForm="ngForm">
+									<div class="yes-no" *ngIf="item.questionType == 'Boolean'">
+										<ion-button size="small" class="btn-red" (click)="onYesNo(item, true)"
+											[disabled]="showLoader">Yes
+										</ion-button>
+										<ion-button size="small" class="btn-green" (click)="onYesNo(item, false)"
+											[disabled]="showLoader">No
+										</ion-button>
+									</div>
+									<div class="input" *ngIf="item.questionType == 'Numeric'">
+										<ion-input type="number" class="form-control" placeholder="Enter Number"
+											id="number" required [(ngModel)]="answerForm.answer" name="number">
+										</ion-input>
+									</div>
+									<div class="text-area" *ngIf="item.questionType == 'FreeText'">
+										<ion-textarea class="form-control" rows="2" cols="10"
+											placeholder="Enter short notes here..." id="freetext" required
+											[(ngModel)]="answerForm.answer" name="freetext"></ion-textarea>
+									</div>
+									<div class="date" *ngIf="item.questionType == 'Date'">
+										<ion-datetime class="form-control" [displayFormat]="datedisplayFormat"
+											[pickerFormat]="datepickerFormat" placeholder="Select Date" id="date"
+											required [(ngModel)]="answerForm.answer" name="date">
+										</ion-datetime>
+									</div>
+									<div class="time" *ngIf="item.questionType == 'Time'">
+										<ion-datetime class="form-control" [displayFormat]="timedisplayFormat"
+											[pickerFormat]="timepickerFormat" placeholder="Select Time" id="time"
+											required [(ngModel)]="answerForm.answer" name="time">
+										</ion-datetime>
+									</div>
+									<div class="multi-select" *ngIf="item.questionType == 'SingleChoice'">
+										<ion-item lines="none"
+											*ngFor="let subItem of item.surveyResponseChoices; let i = index">
+											<ion-label>{{subItem.option}}</ion-label>
+											<ion-checkbox slot="start" class="custom-checkbox" name="singleselect"
+												required [value]="subItem.optionId" [disabled]="subItem.isChecked"
+												(ionChange)="onSingleSelect($event, subItem.optionSetId, item.surveyResponseChoices)">
+											</ion-checkbox>
+										</ion-item>
+									</div>
+									<div class="multi-select" *ngIf="item.questionType == 'MultiChoice'">
+										<ion-item lines="none"
+											*ngFor="let subItem of item.surveyResponseChoices; let i = index">
+											<ion-label>{{subItem.option}}</ion-label>
+											<ion-checkbox slot="start" class="custom-checkbox" name="multiselect"
+												required [value]="subItem.optionId" [disabled]="subItem.isChecked"
+												(ionChange)="onMultiSelect($event, subItem.optionSetId, item.surveyResponseChoices)">
+											</ion-checkbox>
+										</ion-item>
+									</div>
+									<ion-button type="button" size="small" class="btn-next"
+										(click)="onSubmitAnswer(item, answerForm)"
+										*ngIf="item.questionType !== 'Boolean'"
+										[disabled]="showLoader"
+										[disabled]="!answerForm.valid"
+										[disabled]="item.questionType == 'MultiChoice' ? multiSelectIds.length == 0 : ''"
+										[disabled]="item.questionType == 'SingleChoice' ? singleSelectId == null : ''">
+										Submit
+									</ion-button>
+									<ion-button type="button" size="small" class="btn-skip"
+										(click)="onSkipQuestion(item, answerForm)" *ngIf="!item.isMandatory"
+										[ngClass]="{'top-left': item.questionType == 'Boolean'}"
+										[disabled]="showLoader">
+										Skip
+									</ion-button>
+								</form>
+							</ion-card-content>
+						</ion-card>
+					</div>
+					<div *ngIf="noSurveyForUser">
+						<ion-card class="ion-card ion-card-empty ion-text-center">
+							<ion-card-header>
+								<ion-card-title class="ion-card-header">
+									Self-Heath Check questionnaire is not available for you. Please contact your
+									Supervisor
+								</ion-card-title>
+							</ion-card-header>
+						</ion-card>
+					</div>
+				</div>
+				<!-- Past List Tab -->
+				<div class="past" *ngIf="selectedTab == 'past'">
+					<ion-list *ngIf="items && items.length > 0; else empty">
+						<ion-item class="past-item" detail="false" *ngFor="let item of items"
+							[ngClass]="{'red': item.colorCode == 'RED'}">
+							<ion-avatar slot="start" *ngIf="item.colorCode == 'GREEN'">
+								<img src="/assets/icon/heart-dark.svg">
+							</ion-avatar>
+							<ion-avatar slot="start" *ngIf="item.colorCode == 'RED'">
+								<img src="/assets/icon/wrong-big.svg">
+							</ion-avatar>
+							<ion-label>
+								<h3>{{item.createdDate | date:"fullDate" }}</h3>
+								<p>{{item.survey}}</p>
+							</ion-label>
+							<ion-button slot="end" size="small" (click)="onView(item)">View</ion-button>
+						</ion-item>
+						<!-- <ion-item class="past-item red" detail="false">
+							<ion-avatar slot="start">
+								<img src="/assets/icon/wrong-big.svg">
+							</ion-avatar>
+							<ion-label>
+								<h3>06/03/2021</h3>
+								<p>Bengaluru Jayanagar Office</p>
+							</ion-label>
+							<ion-button slot="end" size="small" (click)="onView()">View</ion-button>
+						</ion-item> -->
+					</ion-list>
+					<ng-template #empty>
+						<ion-card class="ion-card ion-card-empty ion-text-center">
+							<ion-card-header>
+								<ion-card-title class="ion-card-header">
+									No Self-Check Found
+								</ion-card-title>
+							</ion-card-header>
+						</ion-card>
+					</ng-template>
+				</div>
+			</ion-col>
+		</ion-row>
+	</ion-grid>
+</ion-content>
+
+
+<ion-footer class="ion-no-border" *ngIf="showSubmitBtn">
+	<ion-button class="btn-gradient" expand="full" (click)="onSubmit()">
+		Submit
+	</ion-button>
+</ion-footer>

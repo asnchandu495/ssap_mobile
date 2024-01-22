@@ -1,0 +1,57 @@
+<ion-header translucent="true" class="ion-no-border ion-header-transparent">
+	<ion-toolbar class="side-button">
+		<ion-buttons slot="start">
+			<ion-menu-button>
+				<ion-icon src="/assets/icon/menu.svg" size="small"></ion-icon>
+			</ion-menu-button>
+		</ion-buttons>
+		<ion-buttons slot="end" class="bell-button" [routerLink]="['/tabs/notification']">
+			<ion-badge class="notification-count-badge">
+				<span>{{unReadCount}}</span>
+			</ion-badge>
+			<ion-icon src="/assets/icon/bell.svg"></ion-icon>
+		</ion-buttons>
+	</ion-toolbar>
+	<ion-toolbar class="transparent ion-toolbar-title">
+		<ion-title>Emergency Contact</ion-title>
+	</ion-toolbar>
+	<!-- Searchbar in a Toolbar -->
+	<ion-toolbar class="transparent ion-toolbar-searchbar ion-text-center">
+		<ion-searchbar placeholder="Enter search criteria" (ionChange)="onSearch($event)"
+			searchIcon="/assets/icon/search.svg">
+		</ion-searchbar>
+		<ion-text>Eg: HR, Security etc.</ion-text>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen="true" class="background-gradient">
+	<ion-grid class="ion-padding">
+		<ion-row>
+			<ion-col size="12" *ngIf="items && items.length > 0; else empty">
+				<ion-card class="ion-card" *ngFor="let item of items; let i = index" [class.active]="expandedItem == i">
+					<ion-card-header class="ion-card-header" (click)="expandedItem = i">
+						{{ item.purpose }}
+						<ion-icon src="/assets/icon/angle.svg"></ion-icon>
+					</ion-card-header>
+					<div class="collpase" #collpase [style.height.px]="expandedItem == i ? collpase.scrollHeight : 0">
+						<hr class="lines">
+						<p *ngFor="let number of item.numbers;">
+							<a class=" number-link" href="tel:{{number}}">{{number}}</a>
+						</p>
+					</div>
+				</ion-card>
+			</ion-col>
+			<ng-template #empty>
+				<ion-col size="12">
+					<ion-card class="ion-card ion-text-center">
+						<ion-card-header>
+							<ion-card-title class="ion-card-header ion-no-padding">
+								Emergency Contact details are not available.
+							</ion-card-title>
+						</ion-card-header>
+					</ion-card>
+				</ion-col>
+			</ng-template>
+		</ion-row>
+	</ion-grid>
+</ion-content>

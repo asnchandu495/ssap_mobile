@@ -1,0 +1,104 @@
+<ion-menu side="start" contentId="main" class="custom-side-menu" type="overlay" (ionWillOpen)="onMenuOpen()">
+	<ion-header>
+		<div class="button-icons">
+			<ion-buttons slot="start" class="ion-float-left ion-activatable ripple-parent" (click)="onCloseSideMenu()">
+				<ion-icon src="/assets/icon/back-close.svg"></ion-icon>
+				<ion-ripple-effect type="unbounded"></ion-ripple-effect>
+			</ion-buttons>
+			<ion-buttons slot="end" class="ion-float-right ion-activatable ripple-parent" (click)="captureSelfie()">
+				<ion-icon src="/assets/icon/camera.svg"></ion-icon>
+				<ion-ripple-effect type="unbounded"></ion-ripple-effect>
+			</ion-buttons>
+		</div>
+		<ion-img [src]="UserImage"></ion-img>
+		<!-- <img [src]="UserImage" alt="Profile Picture"> -->
+		<div class="image-thumbnail" *ngIf="UploadProfileImage">
+			<ion-thumbnail slot="end">
+				<img [src]="UploadProfileImage">
+			</ion-thumbnail>
+		</div>
+		<div class="profile-text">
+			<p>Last Updated: <span *ngIf="LastUpdated">{{LastUpdatedDate}}
+					{{LastUpdatedTime}}</span></p>
+			<p>Status: <span>{{Status}}</span></p>
+		</div>
+	</ion-header>
+	<ion-content>
+		<div class="fixed-text">
+			<h5 class="user-name">{{UserName}} <span class="dot"
+					[ngClass]="{'dot-green': checkedIn, 'dot-red': !checkedIn}"></span></h5>
+			<ion-text class="user-title">{{Desgination}}</ion-text>
+		</div>
+		<ion-list>
+			<ion-menu-toggle auto-hide="false" *ngIf="isSupervisor">
+				<ion-item [routerLink]="['/tabs/manage-team']" detail="false" lines="none">
+					<ion-icon src="/assets/icon/user.svg" class="ion-icon"></ion-icon>
+					<span class="span-label">Manage Team Requests</span>
+				</ion-item>
+			</ion-menu-toggle>
+			<ion-menu-toggle auto-hide="false" *ngIf="isSupervisor">
+				<ion-item [routerLink]="['/tabs/attendance-report']" detail="false" lines="none">
+					<ion-icon src="/assets/icon/user-check.svg" class="ion-icon"></ion-icon>
+					<span class="span-label">Team Attendance</span>
+				</ion-item>
+			</ion-menu-toggle>
+			<ion-menu-toggle auto-hide="false">
+				<ion-item [routerLink]="['/tabs/work-location/manage-wfhl']" detail="false" lines="none">
+					<ion-icon src="/assets/icon/map-pin.svg" class="ion-icon"></ion-icon>
+					<span class="span-label">Manage WFHLs</span>
+				</ion-item>
+			</ion-menu-toggle>
+			<ion-menu-toggle auto-hide="false">
+				<ion-item (click)="myHealthDeclaration()" detail="false" lines="none">
+					<ion-icon src="/assets/icon/heart.svg" class="ion-icon"></ion-icon>
+					<span class="span-label">My Health Declarations</span>
+				</ion-item>
+			</ion-menu-toggle>
+			<ion-menu-toggle auto-hide="false">
+				<ion-item (click)="takeSelfCheck()" detail="false" lines="none">
+					<ion-icon src="/assets/icon/activity.svg" class="ion-icon"></ion-icon>
+					<span class="span-label">Take Self Health Check</span>
+				</ion-item>
+			</ion-menu-toggle>
+			<ion-menu-toggle auto-hide="false">
+				<ion-item [routerLink]="['/tabs/report-dashboard']" detail="false" lines="none">
+					<ion-icon src="/assets/icon/bar-chart.svg" class="ion-icon"></ion-icon>
+					<span class="span-label">Reports</span>
+				</ion-item>
+			</ion-menu-toggle>
+			<ion-menu-toggle auto-hide="false">
+				<ion-item [routerLink]="['/tabs/emergency-contact']" detail="false" lines="none">
+					<ion-icon src="/assets/icon/phone.svg" class="ion-icon"></ion-icon>
+					<span class="span-label">Emergency Contact</span>
+				</ion-item>
+			</ion-menu-toggle>
+			<ion-menu-toggle auto-hide="false">
+				<ion-item [routerLink]="['/tabs/faq']" detail="false" lines="none">
+					<ion-icon src="/assets/icon/help-circle.svg" class="ion-icon"></ion-icon>
+					<span class="span-label">FAQs</span>
+				</ion-item>
+			</ion-menu-toggle>
+			<ion-menu-toggle auto-hide="false">
+				<ion-item [routerLink]="['/tabs/change-password']" detail="false" lines="none" lines="none">
+					<ion-icon src="/assets/icon/settings.svg" class="ion-icon"></ion-icon>
+					<span class="span-label">Change Password</span>
+				</ion-item>
+			</ion-menu-toggle>
+		</ion-list>
+	</ion-content>
+
+	<ion-footer class="ion-no-border ion-footer-button">
+		<ion-button type="button" class="btn-default btn-gradient" *ngIf="!checkedIn" (click)="onCheckIn()">
+			<ion-icon slot="start" src="/assets/icon/log-in.svg"></ion-icon>
+			Check-in
+		</ion-button>
+		<ion-button type="button" class="btn-default btn-gradient" *ngIf="checkedIn" (click)="onCheckOut()">
+			<ion-icon slot="start" src="/assets/icon/logout-white.svg"></ion-icon>
+			Check-Out
+		</ion-button>
+		<ion-button type="button" class="btn-default btn-dark" (click)="onLogout()">
+			<ion-icon slot="start" src="/assets/icon/power.svg"></ion-icon>
+			Logout
+		</ion-button>
+	</ion-footer>
+</ion-menu>

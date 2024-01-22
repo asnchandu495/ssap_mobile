@@ -1,0 +1,35 @@
+<ion-header translucent="true" class="ion-no-border ion-header-transparent" *ngIf="!isNewUser">
+	<ion-toolbar class="side-button">
+		<ion-buttons slot="start">
+			<ion-menu-button>
+				<ion-icon src="/assets/icon/menu.svg" size="small"></ion-icon>
+			</ion-menu-button>
+		</ion-buttons>
+		<ion-buttons slot="end" class="bell-button" [routerLink]="['/tabs/notification']">
+			<ion-badge class="notification-count-badge">
+				<span>{{unReadCount}}</span>
+			</ion-badge>
+			<ion-icon src="/assets/icon/bell.svg"></ion-icon>
+		</ion-buttons>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen="true" class="background-gradient">
+	<div class="row" [ngClass]="{'align-center': isNewUser}">
+		<p class="title">Profile Picture Preview</p>
+		<ion-img [src]="profileImage" class="img-preview"></ion-img>
+		<div class="buttons">
+			<ion-button type="button" expand="block" class="btn-block btn-gradient" (click)="onReTakeSelfie()">RE-TAKE
+				SELFIE
+			</ion-button>
+			<ion-button type="button" expand="block" class="btn-block btn-gradient" (click)="onRequestApproval()"
+				*ngIf="!checkIn">
+				REQUEST APPROVAL
+			</ion-button>
+			<ion-button type="button" expand="block" class="btn-block btn-gradient" (click)="onVerifySelfie()"
+				*ngIf="checkIn">
+				SUBMIT SELFIE
+			</ion-button>
+		</div>
+	</div>
+</ion-content>

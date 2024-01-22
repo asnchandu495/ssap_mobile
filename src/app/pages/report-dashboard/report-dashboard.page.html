@@ -1,0 +1,38 @@
+<ion-header translucent="true" class="ion-no-border ion-header-transparent">
+	<ion-toolbar class="side-button">
+		<ion-buttons slot="start">
+			<ion-menu-button>
+				<ion-icon src="/assets/icon/menu.svg" size="small"></ion-icon>
+			</ion-menu-button>
+		</ion-buttons>
+		<ion-buttons slot="end" class="bell-button" [routerLink]="['/tabs/notification']">
+			<ion-badge class="notification-count-badge">
+				<span>{{unReadCount}}</span>
+			</ion-badge>
+			<ion-icon src="/assets/icon/bell.svg"></ion-icon>
+		</ion-buttons>
+	</ion-toolbar>
+	<ion-toolbar class="transparent ion-toolbar-title">
+		<ion-title>Reports</ion-title>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen="true" class="background-gradient">
+	<ion-grid class="ion-padding">
+		<ion-row>
+			<ion-col size="3">
+				&nbsp;
+			</ion-col>
+			<ion-col size="6" class="ion-text-center">
+				<div class="router-link" [routerLink]="['./location-density']">
+					<img src="/assets/icon/location-density.svg">
+					<p>Location</p>
+					<p>Density</p>
+				</div>
+			</ion-col>
+			<ion-col size="3">
+				&nbsp;
+			</ion-col>
+		</ion-row>
+	</ion-grid>
+</ion-content>

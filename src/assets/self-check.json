@@ -1,0 +1,170 @@
+[
+	{
+		"surveyId": "1",
+		"questionType": "Time",
+		"question": "At what time your last temperature captured today?",
+		"goto": "2"
+	},
+	{
+		"surveyId": "2",
+		"questionType": "Numeric",
+		"question": "Please specify the temperature?",
+		"goto": "3"
+	},
+	{
+		"surveyId": "3",
+		"questionType": "Time",
+		"question": "At what time your last SpO2 measured today?",
+		"goto": "4"
+	},
+	{
+		"surveyId": "4",
+		"questionType": "Numeric",
+		"question": "Please specify the SpO2?",
+		"goto": "5"
+	},
+	{
+		"surveyId": "5",
+		"questionType": "SingleChoice",
+		"question": "Are you fall in any of the age group below?",
+		"surveyResponseChoices": [
+			{
+				"optionId": "1",
+				"option": "0 to 2"
+			},
+			{
+				"optionId": "2",
+				"option": "3 to 12"
+			},
+			{
+				"optionId": "3",
+				"option": "13 to 18"
+			},
+			{
+				"optionId": "4",
+				"option": "19 to 44"
+			},
+			{
+				"optionId": "5",
+				"option": "45 to 59"
+			},
+			{
+				"optionId": "6",
+				"option": "Above 60"
+			}
+		],
+		"goto": "6"
+	},
+	{
+		"surveyId": "6",
+		"questionType": "SingleChoice",
+		"question": "Are you from which state?",
+		"surveyResponseChoices": [
+			{ "optionId": "1", "option": "Andhra Pradesh" },
+			{ "optionId": "2", "option": "Arunachal Pradesh" },
+			{ "optionId": "3", "option": "Assam" },
+			{ "optionId": "4", "option": "Bihar" },
+			{ "optionId": "5", "option": "Chhattisgarh" },
+			{ "optionId": "6", "option": "Goa" },
+			{ "optionId": "7", "option": "Gujarat" },
+			{ "optionId": "8", "option": "Haryana" },
+			{ "optionId": "9", "option": "Himachal Pradesh" },
+			{ "optionId": "10", "option": "Jammu and Kashmir" },
+			{ "optionId": "11", "option": "Karnataka" },
+			{ "optionId": "12", "option": "Kerala" },
+			{ "optionId": "13", "option": "Madhya Pradesh" },
+			{ "optionId": "14", "option": "Maharashtra" },
+			{ "optionId": "15", "option": "Manipur" },
+			{ "optionId": "16", "option": "Meghalaya" },
+			{ "optionId": "17", "option": "Mizoram" },
+			{ "optionId": "18", "option": "Nagaland" },
+			{ "optionId": "19", "option": "Odisha (Orissa)" },
+			{ "optionId": "20", "option": "Punjab" },
+			{ "optionId": "21", "option": "Rajasthan" },
+			{ "optionId": "22", "option": "Sikkim" },
+			{ "optionId": "23", "option": "Tamil Nadu" },
+			{ "optionId": "24", "option": "Telangana" },
+			{ "optionId": "25", "option": "Tripura" },
+			{ "optionId": "26", "option": "Uttar Pradesh" },
+			{ "optionId": "27", "option": "Uttarakhand" },
+			{ "optionId": "28", "option": "West Bengal" }
+		],
+		"goto": "7"
+	},
+	{
+		"surveyId": "7",
+		"questionType": "SingleChoice",
+		"question": "Which blood group are you belong to?",
+		"surveyResponseChoices": [
+			{ "optionId": "1", "option": "O+" },
+			{ "optionId": "2", "option": "O-" },
+			{ "optionId": "3", "option": "A+" },
+			{ "optionId": "4", "option": "A-" },
+			{ "optionId": "5", "option": "B+" },
+			{ "optionId": "6", "option": "B-" },
+			{ "optionId": "7", "option": "None of the above" }
+		],
+		"goto": "8"
+	},
+	{
+		"surveyId": "8",
+		"questionType": "Boolean",
+		"question": "Have you travelled anywhere Internationally in the last 28-45 days?",
+		"goto": "9"
+	},
+	{
+		"surveyId": "9",
+		"questionType": "MultiChoice",
+		"question": "Are you experiencing any of the following symptoms (or a combination of these symptoms)",
+		"surveyResponseChoices": [
+			{ "optionId": "1", "option": "Fever" },
+			{ "optionId": "2", "option": "Cold" },
+			{ "optionId": "3", "option": "Cough" },
+			{ "optionId": "4", "option": "Difficulty in breathing" },
+			{ "optionId": "5", "option": "Muscle aches" },
+			{ "optionId": "6", "option": "Fatigue" },
+			{ "optionId": "7", "option": "Headache" },
+			{ "optionId": "8", "option": "Sore throat" },
+			{ "optionId": "9", "option": "Nausea" },
+			{ "optionId": "10", "option": "Vomiting" },
+			{ "optionId": "11", "option": "None of the above" }
+		],
+		"goto": "10"
+	},
+	{
+		"surveyId": "10",
+		"questionType": "FreeText",
+		"question": "Please specify any of the other symptoms not mentioned in Question # 9?",
+		"goto": "11"
+	},
+	{
+		"surveyId": "11",
+		"questionType": "Boolean",
+		"question": "Are any of your family members, residing with you, experiencing any of the symptoms mentioned in Question 9?",
+		"goto": "12"
+	},
+	{
+		"surveyId": "12",
+		"questionType": "Boolean",
+		"question": "Do you reside in or near a COVID-19 hot spot?",
+		"goto": "13"
+	},
+	{
+		"surveyId": "13",
+		"questionType": "Boolean",
+		"question": "Have you been asked to quarantine yourself by a medical professional or by public health department?",
+		"goto": "14"
+	},
+	{
+		"surveyId": "14",
+		"questionType": "Boolean",
+		"question": "Have you been in contact with a Covid positive patient  in the last 14 days?",
+		"goto": "15"
+	},
+	{
+		"surveyId": "15",
+		"questionType": "Date",
+		"question": "When was your last Covid 19 test was conducted?",
+		"goto": ""
+	}
+]

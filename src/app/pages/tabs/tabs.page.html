@@ -1,0 +1,24 @@
+<ion-tabs #tabs (ionTabsDidChange)="isCheckedIn()">
+	<ion-tab-bar slot="bottom">
+		<ion-tab-button tab="dashboard">
+			<ion-icon src="/assets/icon/dashboard.svg"></ion-icon>
+			<ion-label>Dashboard</ion-label>
+		</ion-tab-button>
+		<ion-tab-button (click)="onHealthCheck()" [class.tab-selected]="selectedTab == 'health-check'">
+			<ion-icon src="/assets/icon/heart-light.svg"></ion-icon>
+			<ion-label>Health Check</ion-label>
+		</ion-tab-button>
+		<ion-tab-button *ngIf="isSupervisor" tab="manage-team">
+			<ion-icon src="/assets/icon/users.svg"></ion-icon>
+			<ion-label>Users</ion-label>
+		</ion-tab-button>
+		<ion-tab-button *ngIf="!checkedIn" (click)="onCheckIn()">
+			<ion-icon src="/assets/icon/login-light.svg"></ion-icon>
+			<!-- <ion-label>Check In</ion-label> -->
+		</ion-tab-button>
+		<ion-tab-button *ngIf="checkedIn" (click)="onCheckOut()">
+			<ion-icon src="/assets/icon/logout-light.svg"></ion-icon>
+			<!-- <ion-label>Check In</ion-label> -->
+		</ion-tab-button>
+	</ion-tab-bar>
+</ion-tabs>

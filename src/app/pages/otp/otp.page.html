@@ -1,0 +1,82 @@
+<ion-header translucent="true" class="ion-no-border ion-header-transparent">
+	<ion-toolbar class="transparent">
+		<ion-buttons (click)="onBack()" slot="start" class="back-button">
+			<ion-icon src="/assets/icon/left-arrow.svg"></ion-icon>
+		</ion-buttons>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen="true" class="background-gradient default-page">
+	<form #otpForm="ngForm">
+		<ion-grid class="pl-25 pr-25">
+			<ion-row>
+				<ion-img src="/assets/icon/logo.svg" class="margin-auto"></ion-img>
+				<ion-col size="12">
+					<div class="py-25">
+						<h4 class="title-text medium">An OTP has been sent to your</h4>
+						<h3 class="title-text">email id</h3>
+					</div>
+					<h6 class="title-text">Please enter the OTP below</h6>
+				</ion-col>
+				<ion-col size="12" class="ion-text-center">
+					<div class="forms-inline">
+						<!-- field-error -->
+						<ion-input type="tel" class="form-control-sm" name="pin1" #otp1 required="true" maxLength="1"
+							[(ngModel)]="otpForm.pin1" (keyup)="onKeyupOTP($event,otp2,otp1)"
+							[ngClass]="{ 'field-error': invalidOTP }">
+						</ion-input>
+						<ion-input type="tel" class="form-control-sm" name="pin2" #otp2 required="true" maxLength="1"
+							[(ngModel)]="otpForm.pin2" (keyup)="onKeyupOTP($event,otp3,otp1)"
+							[ngClass]="{ 'field-error': invalidOTP }">
+						</ion-input>
+						<ion-input type="tel" class="form-control-sm" name="pin3" #otp3 required="true" maxLength="1"
+							[(ngModel)]="otpForm.pin3" (keyup)="onKeyupOTP($event,otp4,otp2)"
+							[ngClass]="{ 'field-error': invalidOTP }">
+						</ion-input>
+
+						<ion-input type="tel" class="form-control-sm" name="pin4" #otp4 required="true" maxLength="1"
+							[(ngModel)]="otpForm.pin4" (keyup)="onKeyupOTP($event,otp5,otp3)"
+							[ngClass]="{ 'field-error': invalidOTP }">
+						</ion-input>
+
+						<ion-input type="tel" class="form-control-sm" name="pin5" #otp5 required="true" maxLength="1"
+							[(ngModel)]="otpForm.pin5" (keyup)="onKeyupOTP($event,otp6,otp4)"
+							[ngClass]="{ 'field-error': invalidOTP }">
+						</ion-input>
+
+						<ion-input type="tel" class="form-control-sm" name="pin6" #otp6 required="true" maxLength="1"
+							[(ngModel)]="otpForm.pin6" (keyup)="onKeyupOTP($event,otp6,otp5)"
+							[ngClass]="{ 'field-error': invalidOTP }">
+						</ion-input>
+					</div>
+					<div *ngIf="invalidOTP" class="alert-text">
+						<ion-text>{{ otpErrorLog }}</ion-text>
+					</div>
+				</ion-col>
+				<ion-col size="12">
+					<ion-button type="button" expand="block" class="btn-block btn-gradient" (click)="onSubmit()"
+						[disabled]="!otpForm.valid" [disabled]="showLoader">SUBMIT
+						<ion-spinner *ngIf="showLoader" class="ion-margin-start" name="circles"></ion-spinner>
+					</ion-button>
+				</ion-col>
+				<ion-col size="12" class="ion-text-center">
+					<a class="router-link" (click)="onResendOTP()">
+						Resend OTP
+					</a>
+				</ion-col>
+				<ion-col size="12" class="ion-text-center">
+					<a class="router-link" [routerLink]="['/login']">
+						Login
+					</a>
+				</ion-col>
+			</ion-row>
+		</ion-grid>
+	</form>
+</ion-content>
+
+<!-- Footer without a border -->
+<ion-footer class="default-page-footer ion-no-border ion-text-center">
+	<ion-text class="footer-text copy-right-footer">
+		Copyrights © Sutherland® 2021. All Rights reserved
+	</ion-text>
+</ion-footer>

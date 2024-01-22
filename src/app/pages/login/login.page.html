@@ -1,0 +1,83 @@
+<ion-content fullscreen="true" class="background-gradient default-page">
+	<form [formGroup]="form" (ngSubmit)="onLogIn()">
+		<ion-grid class="pt-40 pl-25 pr-25">
+			<ion-row>
+				<ion-img src="/assets/icon/logo.svg" class="margin-auto"></ion-img>
+				<ion-col size="12">
+					<div class="py-25">
+						<h4 class="title-text">Welcome to,</h4>
+						<h3 class="title-text">Safe</h3>
+					</div>
+					<h6 class="title-text">Please log into your account</h6>
+				</ion-col>
+				<ion-col size="12">
+					<!-- Input with placeholder -->
+					<ion-input type="email" class="form-control" placeholder="Username" formControlName="formEmail"
+						[ngClass]="{ 'field-error': submitted && invalidUserEmail }" (ionChange)="ionEmailChange()">
+						<ion-icon *ngIf="!form.get('formEmail').valid && !invalidUserEmail" class="suffix-icon"
+							src="/assets/icon/right-default.svg">
+						</ion-icon>
+						<ion-icon *ngIf="!form.get('formEmail').invalid && !invalidUserEmail" class="suffix-icon"
+							src="/assets/icon/right-success.svg">
+						</ion-icon>
+						<ion-icon *ngIf="submitted && invalidUserEmail" class="suffix-icon" src="/assets/icon/close.svg"
+							(click)="clearInput('email')">
+						</ion-icon>
+					</ion-input>
+					<!-- <div *ngIf="submitted && form.get('formEmail').hasError('required')" class="alert-text">
+						<ion-text *ngIf="form.get('formEmail').errors.required">
+							Please fill in the mandatory field
+						</ion-text>
+					</div> -->
+					<ng-container *ngFor="let error of errorMessages.email">
+						<div class="alert-text" *ngIf="submitted && form.get('formEmail').hasError(error.type)">
+							<ion-text> {{ error.message }} </ion-text>
+						</div>
+					</ng-container>
+				</ion-col>
+				<ion-col size="12">
+					<!-- Input with placeholder -->
+					<ion-input [type]="showPassword ? 'text' : 'password'" class="form-control" placeholder="Password"
+						formControlName="formPassword" [ngClass]="{ 'field-error': submitted && invalidUserPassword }"
+						(ionChange)="ionPasswordChange()">
+						<ion-button *ngIf="!invalidUserPassword" class="suffix-button active" fill="clear"
+							(click)="onPasswordToggle()">
+							<ion-icon [name]="showPassword ? 'eye-off-outline' : 'eye-outline'"></ion-icon>
+						</ion-button>
+						<ion-icon *ngIf="submitted && invalidUserPassword" class="suffix-icon"
+							src="/assets/icon/close.svg" (click)="clearInput('password')">
+						</ion-icon>
+					</ion-input>
+					<ng-container *ngFor="let error of errorMessages.password">
+						<div class="alert-text" *ngIf="submitted && form.get('formPassword').hasError(error.type)">
+							<ion-text> {{ error.message }} </ion-text>
+						</div>
+					</ng-container>
+				</ion-col>
+				<ion-col size="12">
+					<ion-button type="submit" expand="block" class="btn-block btn-gradient" [disabled]="showLoader"
+						[disabled]="!form.valid">LOG IN
+						<ion-spinner *ngIf="showLoader" class="ion-margin-start" name="circles"></ion-spinner>
+					</ion-button>
+				</ion-col>
+				<ion-col size="12" class="ion-text-center">
+					<a class="router-link" [routerLink]="['/forget-password']" [queryParams]="{isNewUser: false}">
+						Forgot Password?
+					</a>
+				</ion-col>
+				<ion-col size="12" class="ion-text-center">
+					<a class="router-link" [routerLink]="['/forget-password']" [queryParams]="{isNewUser: true}">
+						New User?
+					</a>
+				</ion-col>
+			</ion-row>
+		</ion-grid>
+	</form>
+</ion-content>
+
+<!-- Footer without a border -->
+<ion-footer class="default-page-footer ion-no-border ion-text-center">
+	<ion-text class="footer-text copy-right-footer">
+		Copyrights © Sutherland® 2021. All Rights reserved
+	</ion-text>
+</ion-footer>

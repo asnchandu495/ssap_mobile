@@ -1,0 +1,129 @@
+<ion-header class="ion-no-border">
+	<div class="ion-gradient">
+		<ion-toolbar class="transparent side-button">
+			<ion-buttons slot="start">
+				<ion-menu-button>
+					<ion-icon src="/assets/icon/menu.svg" size="small"></ion-icon>
+				</ion-menu-button>
+			</ion-buttons>
+			<ion-buttons slot="end" class="bell-button" [routerLink]="['/tabs/notification']">
+				<ion-badge class="notification-count-badge">
+					<span>{{unReadCount}}</span>
+				</ion-badge>
+				<ion-icon src="/assets/icon/bell.svg"></ion-icon>
+			</ion-buttons>
+		</ion-toolbar>
+		<ion-toolbar class="transparent ion-toolbar-title">
+			<ion-title>Manage Team Requests</ion-title>
+		</ion-toolbar>
+	</div>
+	<ion-toolbar class="transparent ion-toolbar-checkbox">
+		<ion-item lines="none" slot="start" *ngIf="status == 'Pending'">
+			<ion-label>Select All</ion-label>
+			<ion-checkbox class="custom-checkbox" slot="start" [(ngModel)]="selectedAll"></ion-checkbox>
+		</ion-item>
+		<ion-item lines="none" slot="start" [routerLink]="['/tabs/manage-team']"
+			*ngIf="status == 'Approved' || status == 'Rejected'">
+			<ion-icon src="/assets/icon/arrow-back1.svg"></ion-icon>
+			<ion-label> &nbsp; Back</ion-label>
+		</ion-item>
+		<ion-item lines="none" slot="end" class="collapse-all">
+			<ion-button (click)="onCollapseExpandAll()">
+				<span *ngIf="toggleBtn">Collapse All</span>
+				<span *ngIf="!toggleBtn">Expand All</span>
+			</ion-button>
+		</ion-item>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content>
+	<ion-grid class="ion-no-padding">
+		<ion-row>
+			<ion-col size="12">
+				<div *ngIf="status == 'Pending'">
+					<ion-item-group class="item-group" *ngFor="let item of items; let i = index">
+						<ion-item-divider>
+							<ion-item lines="none" slot="start">
+								<ion-label>{{item.firstName}} {{item.middleName}} {{item.lastName}}</ion-label>
+								<ion-checkbox class="custom-checkbox" slot="start" [checked]="selectedAll"
+									(ionChange)="checkBoxTab($event, item.userId)">
+								</ion-checkbox>
+							</ion-item>
+							<ion-button (click)="onToggleItem(item)">
+								<ion-icon [name]="item.show ? 'remove-outline' : 'add-outline'"></ion-icon>
+							</ion-button>
+						</ion-item-divider>
+						<div class="collpase" #collpase [style.height.px]="item.show ? collpase.scrollHeight : 0">
+							<ion-list *ngIf="item.profilePhotoWorkFlowState">
+								<ion-item>
+									<ion-img [src]="item.uploadedProfileImage" alt="Profile Picture" class="user-image"
+										(ionImgDidLoad)="ionImgDidLoad()">
+									</ion-img>
+									<ion-checkbox class="custom-checkbox" slot="end" [checked]="item.isChecked"
+										[value]="item.profilePhotoWorkFlowState.userId"
+										(ionChange)="checkBoxPicture($event)">
+									</ion-checkbox>
+								</ion-item>
+							</ion-list>
+							<ion-list *ngIf="item.appUserLocations.length > 0;">
+								<ion-item *ngFor="let subitem of item.appUserLocations">
+									<ion-label>
+										<h3>{{subitem.name}}</h3>
+										<p>{{subitem.location}}</p>
+										<ion-button type="button" size="small" class="view-btn"
+											(click)="viewOnMap(subitem)">
+											<ion-icon src="/assets/icon/place.svg"></ion-icon> View Location
+										</ion-button>
+									</ion-label>
+									<ion-checkbox class="custom-checkbox" slot="end" [checked]="item.isChecked"
+										[value]="subitem.id" (ionChange)="checkBoxLocation($event)"></ion-checkbox>
+								</ion-item>
+							</ion-list>
+						</div>
+					</ion-item-group>
+				</div>
+				<div *ngIf="status == 'Approved' || status == 'Rejected'">
+					<ion-item-group class="item-group" *ngFor="let item of items; let i = index">
+						<ion-item-divider>
+							<ion-item lines="none" slot="start">
+								<ion-label>{{item.firstName}} {{item.middleName}} {{item.lastName}}</ion-label>
+							</ion-item>
+							<ion-button (click)="onToggleItem(item)">
+								<ion-icon [name]="item.show ? 'remove-outline' : 'add-outline'"></ion-icon>
+							</ion-button>
+						</ion-item-divider>
+						<div class="collpase" #collpase [style.height.px]="item.show ? collpase.scrollHeight : 0">
+							<ion-list *ngIf="item.profilePhotoWorkFlowState">
+								<ion-item *ngIf="item.profileImage">
+									<ion-img [src]="item.profileImage" alt="Profile Picture" class="user-image"
+										(ionImgDidLoad)="ionImgDidLoad()">
+									</ion-img>
+								</ion-item>
+							</ion-list>
+							<ion-list *ngIf="item.appUserLocations.length > 0;">
+								<ion-item *ngFor="let subitem of item.appUserLocations">
+									<ion-label>
+										<h3>{{subitem.name}}</h3>
+										<p>{{subitem.location}}</p>
+									</ion-label>
+								</ion-item>
+							</ion-list>
+						</div>
+					</ion-item-group>
+				</div>
+			</ion-col>
+		</ion-row>
+	</ion-grid>
+</ion-content>
+
+<!-- Footer without a border -->
+<ion-footer class="ion-no-border ion-footer-button button-accept-reject" *ngIf="status == 'Pending'">
+	<ion-button type="button" class="btn-gradient" (click)="onApprove($event)"
+		[disabled]="!(checkboxPictureIds.length > 0) && !(checkboxLocationIds.length > 0)">
+		APPROVE
+	</ion-button>
+	<ion-button type="button" class="btn-black" (click)="onReject($event)"
+		[disabled]="!(checkboxPictureIds.length > 0) && !(checkboxLocationIds.length > 0)">
+		REJECT
+	</ion-button>
+</ion-footer>

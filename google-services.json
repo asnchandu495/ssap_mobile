@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "364597125111",
+    "project_id": "ssap-sumeru",
+    "storage_bucket": "ssap-sumeru.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:364597125111:android:80444131d8b9f512ac58f2",
+        "android_client_info": {
+          "package_name": "com.sumeru.ssap"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "364597125111-6fok7is10e695o7flto12c0q2ot4gi3i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAHC7TqUk551aKcuWpW1Jumj2ict1We6gk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "364597125111-6fok7is10e695o7flto12c0q2ot4gi3i.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "364597125111-50lf2fdqch83n2573brkblbkhomg3lto.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.sumeru.ssap"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

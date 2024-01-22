@@ -1,0 +1,64 @@
+<ion-header class="ion-no-border">
+	<div class="ion-gradient">
+		<ion-toolbar class="transparent side-button">
+			<ion-buttons slot="start">
+				<ion-menu-button>
+					<ion-icon src="/assets/icon/menu.svg" size="small"></ion-icon>
+				</ion-menu-button>
+			</ion-buttons>
+			<ion-buttons slot="end" class="bell-button" [routerLink]="['/tabs/notification']">
+				<ion-badge class="notification-count-badge">
+					<span>{{unReadCount}}</span>
+				</ion-badge>
+				<ion-icon src="/assets/icon/bell.svg"></ion-icon>
+			</ion-buttons>
+			<ion-buttons slot="end" class="bell-button" (click)="onshowSearch()">
+				<ion-icon [src]="showSearch ? '/assets/icon/search-close.svg' : '/assets/icon/search-white.svg'">
+				</ion-icon>
+			</ion-buttons>
+		</ion-toolbar>
+		<ion-toolbar class="transparent ion-toolbar-title">
+			<ion-title>Frequently Asked Questions</ion-title>
+		</ion-toolbar>
+	</div>
+	<!-- Searchbar in a Toolbar -->
+	<ion-toolbar class="ion-toolbar-search" [ngClass]="{'ion-hide': !showSearch}">
+		<ion-searchbar #search class="search-big-text" placeholder="" (ionChange)="onSearch()"
+			searchIcon="/assets/icon/search-light.svg" [(ngModel)]="searchTerm">
+		</ion-searchbar>
+	</ion-toolbar>
+	<!-- Sort -->
+	<ion-toolbar class="ion-toolbar-sort">
+		<ion-select interface="action-sheet" [(ngModel)]="category" (ionChange)="onSectionChange()">
+			<ion-select-option *ngFor="let item of actionSheet" [value]="item.id"
+				[ngClass]="{'matches-highlight': item.isHighlight}">{{item.name}}
+			</ion-select-option>
+		</ion-select>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content>
+	<ion-grid class="ion-no-padding">
+		<ion-row>
+			<ion-col size="12" *ngIf="items && items.length > 0; else empty">
+				<ion-card *ngFor="let item of items; let i = index; let odd=odd; let even=even;"
+					[ngClass]="{'gray': odd, 'white': even }">
+					<ion-card-header>
+						<ion-card-title [innerHTML]="item.questionName | highlightText: searchTerm"></ion-card-title>
+					</ion-card-header>
+					<ion-card-content [innerHTML]="item.answer | highlightText: searchTerm">
+					</ion-card-content>
+				</ion-card>
+			</ion-col>
+			<ng-template #empty>
+				<ion-col size="12">
+					<ion-card class="white ion-text-center">
+						<ion-card-header>
+							<ion-card-title>Frequently Asked Questions are not available.</ion-card-title>
+						</ion-card-header>
+					</ion-card>
+				</ion-col>
+			</ng-template>
+		</ion-row>
+	</ion-grid>
+</ion-content>

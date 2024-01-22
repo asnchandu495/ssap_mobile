@@ -1,0 +1,70 @@
+<ion-header class="ion-no-border">
+	<div class="ion-gradient">
+		<ion-toolbar class="transparent side-button">
+			<ion-buttons slot="start">
+				<ion-menu-button>
+					<ion-icon src="/assets/icon/menu.svg" size="small"></ion-icon>
+				</ion-menu-button>
+			</ion-buttons>
+			<ion-buttons slot="end" class="bell-button" disabled="true">
+				<ion-icon src="/assets/icon/bell.svg"></ion-icon>
+			</ion-buttons>
+		</ion-toolbar>
+		<ion-toolbar class="transparent ion-toolbar-title">
+			<ion-title>Notifications</ion-title>
+		</ion-toolbar>
+	</div>
+	<!-- Sort -->
+	<ion-toolbar class="ion-toolbar-sort">
+		<ion-item lines="none">
+			<ion-label>Filter by:</ion-label>
+			<ion-select class="custom-action-sheet" interface="action-sheet" [(ngModel)]="filterBy"
+				(ionChange)="onFilterChange()">
+				<ion-select-option value="Unread">Unread</ion-select-option>
+				<ion-select-option value="Read">Read</ion-select-option>
+				<ion-select-option value="All">All</ion-select-option>
+			</ion-select>
+		</ion-item>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content>
+	<ion-grid class="ion-no-padding" *ngIf="items && items.length > 0; else empty">
+		<ion-row>
+			<ion-col size="12">
+				<ion-list>
+					<ion-item detail="false" *ngFor="let item of items;let i = index" id="{{item.id}}">
+						<ion-label [ngClass]="{'read': item.isRead}">
+							<h3>{{item.message}}</h3>
+							<div>
+								<span class="time">{{getTimeFromNow(item.messageDateTime)}}</span>
+								<span class="button"
+									*ngIf="item.messageType == 'TeamRequest' || item.messageType == 'WFHL' || (item.messageType == 'PPP' && !item.isRead)">
+									<ion-button slot="end" size="small" (click)="onViewMessage(item, i)">View
+									</ion-button>
+								</span>
+								<span class="button" *ngIf="item.messageType == 'AlertToContact' && !item.isRead">
+									<ion-button class="btn-success" slot="end" size="small"
+										(click)="onAlertToContact(item, true, i)">Yes
+									</ion-button>
+									<ion-button class="btn-danger" slot="end" size="small"
+										(click)="onAlertToContact(item, false, i)">No
+									</ion-button>
+								</span>
+							</div>
+						</ion-label>
+					</ion-item>
+				</ion-list>
+			</ion-col>
+		</ion-row>
+	</ion-grid>
+	<ng-template #empty>
+		<ion-card class="ion-card ion-text-center">
+			<ion-card-header>
+				<ion-card-title class="ion-card-header">
+					{{ isLoading ? 'Please wait...' : 'No Notifications'}}
+				</ion-card-title>
+			</ion-card-header>
+		</ion-card>
+	</ng-template>
+</ion-content>

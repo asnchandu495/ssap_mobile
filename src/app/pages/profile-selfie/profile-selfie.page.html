@@ -1,0 +1,42 @@
+<ion-header translucent="true" class="ion-no-border ion-header-transparent" *ngIf="!isNewUser">
+	<ion-toolbar class="side-button">
+		<ion-buttons slot="start">
+			<ion-menu-button>
+				<ion-icon src="/assets/icon/menu.svg" size="small"></ion-icon>
+			</ion-menu-button>
+		</ion-buttons>
+		<ion-buttons slot="end" class="bell-button" [routerLink]="['/tabs/notification']">
+			<ion-badge class="notification-count-badge">
+				<span>{{unReadCount}}</span>
+			</ion-badge>
+			<ion-icon src="/assets/icon/bell.svg"></ion-icon>
+		</ion-buttons>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen="true" class="background-gradient">
+	<div class="row" [ngClass]="{'align-center': isNewUser}">
+		<ion-img src="/assets/icon/logo.svg" class="logo" [ngClass]="{'ion-hide': !isNewUser}"></ion-img>
+		<ion-card *ngIf="isNewUser || !isNewUser && !checkIn">
+			<ion-card-header>
+				<ion-card-title>Setup your Primary Profile Picture</ion-card-title>
+			</ion-card-header>
+			<ion-card-content *ngIf="isNewUser">
+				Setup your Primary Profile Picture (This will go through your supervisor's approval and will be used as
+				authorized picture for check-in going further.)
+			</ion-card-content>
+			<ion-card-content *ngIf="!isNewUser">
+				By changing the profile selfie , you will have to wait for supervisor’s approval to check in. Are you
+				sure you want to change now?
+			</ion-card-content>
+		</ion-card>
+		<ion-card *ngIf="checkIn">
+			<ion-card-header>
+				<ion-card-title class="no-border">Submit your Selfie, from one of your approved WFH locations to check
+					in</ion-card-title>
+			</ion-card-header>
+		</ion-card>
+		<ion-button type="button" expand="block" class="btn-block btn-gradient" (click)="onTakeSelfie()">TAKE A SELFIE
+		</ion-button>
+	</div>
+</ion-content>

@@ -1,0 +1,67 @@
+<ion-header translucent="true" class="ion-no-border ion-header-transparent">
+	<ion-toolbar class="side-button">
+		<ion-buttons slot="start">
+			<ion-menu-button>
+				<ion-icon src="/assets/icon/menu.svg" size="small"></ion-icon>
+			</ion-menu-button>
+		</ion-buttons>
+		<ion-buttons slot="end" class="bell-button" [routerLink]="['/tabs/notification']">
+			<ion-badge class="notification-count-badge">
+				<span>{{unReadCount}}</span>
+			</ion-badge>
+			<ion-icon src="/assets/icon/bell.svg"></ion-icon>
+		</ion-buttons>
+	</ion-toolbar>
+	<ion-toolbar class="transparent ion-toolbar-title">
+		<ion-title>Manage WFHLs</ion-title>
+		<p class="legend-text-white">*WFHLs: Work From Home Locations</p>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen="true" class="background-gradient">
+	<ion-grid class="ion-padding">
+		<ion-row>
+			<ion-col size="12" *ngIf="items && items.length > 0; else empty">
+				<ion-card class="ion-card" *ngFor="let item of items; let i = index" [class.active]="expandedItem == i">
+					<ion-card-header class="ion-card-header" (click)="expandedItem = i">
+						{{ item.name }}
+						<ion-badge class="badge"
+							[ngClass]="{'pending': item.state == 'Pending', 'approved': item.state == 'Approved', 'rejected': item.state == 'Rejected'}">
+							{{item.state}}</ion-badge>
+						<ion-icon src="/assets/icon/angle.svg"></ion-icon>
+					</ion-card-header>
+					<div class="collpase" #collpase [style.height.px]="expandedItem == i ? collpase.scrollHeight : 0">
+						<hr class="lines">
+						<p class="address">{{item.location}}</p>
+						<p class="address" *ngIf="item.state == 'Approved' || item.state == 'Rejected'">
+							<b>Reason for {{item.state}}:</b> {{item.reason}}</p>
+						<!-- <ion-button type="button" size="small" class="delete-btn">
+							Delete Location
+						</ion-button> -->
+						<ion-button type="button" size="small" class="view-btn" (click)="viewOnMap(item)">
+							<ion-icon src="/assets/icon/place.svg"></ion-icon> View Location
+						</ion-button>
+					</div>
+				</ion-card>
+			</ion-col>
+			<ng-template #empty>
+				<ion-col size="12">
+					<ion-card class="ion-card ion-text-center">
+						<ion-card-header>
+							<ion-card-title class="ion-card-header ion-no-padding">
+								Check in is allowed only from approved Work From Home(WFH) location. Request your
+								supervisor to approve your WFH Location.
+							</ion-card-title>
+						</ion-card-header>
+					</ion-card>
+				</ion-col>
+			</ng-template>
+		</ion-row>
+	</ion-grid>
+	<!-- fab placed to the bottom end -->
+	<ion-fab vertical="bottom" horizontal="center" slot="fixed">
+		<ion-fab-button class="btn-gradient" (click)="onAddWFHLs()">
+			<ion-icon size="small" src="/assets/icon/plus.svg"></ion-icon>
+		</ion-fab-button>
+	</ion-fab>
+</ion-content>

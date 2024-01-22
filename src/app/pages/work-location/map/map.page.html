@@ -1,0 +1,26 @@
+<ion-header translucent="true" class="ion-no-border ion-header-transparent" *ngIf="!isEditable">
+	<ion-toolbar>
+		<ion-buttons slot="start" class="back-button" (click)="onBack()">
+			<ion-icon src="/assets/icon/arrow-back1.svg"></ion-icon> &nbsp;Back
+		</ion-buttons>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen="true" class="background-gradient default-page">
+	<!-- <ion-toolbar class="map-search-toolbar" slot="fixed" *ngIf="isEditable">
+		<ion-searchbar placeholder="Search place" searchIcon="assets/icon/search.svg"></ion-searchbar>
+	</ion-toolbar> -->
+	<input #searchInput class="search-box" type="text" placeholder="Search place" *ngIf="isEditable" />
+	<div class="map-wrapper">
+		<div #map class="map"></div>
+	</div>
+</ion-content>
+
+<ion-footer class="ion-no-border" *ngIf="address && isEditable">
+	<ion-toolbar>
+		<p class="para-text">{{address}}</p>
+		<ion-button type="button" expand="block" class="btn-gradient" (click)="onSubmitWFHL()">
+			SUBMIT WFHL
+		</ion-button>
+	</ion-toolbar>
+</ion-footer>

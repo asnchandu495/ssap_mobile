@@ -1,0 +1,144 @@
+<ion-header class="ion-no-border">
+	<div class="ion-gradient">
+		<ion-toolbar class="transparent side-button">
+			<ion-buttons slot="start">
+				<ion-menu-button>
+					<ion-icon src="/assets/icon/menu.svg" size="small"></ion-icon>
+				</ion-menu-button>
+			</ion-buttons>
+			<ion-buttons slot="end" class="bell-button" [routerLink]="['/tabs/notification']">
+				<ion-badge class="notification-count-badge">
+					<span>{{unReadCount}}</span>
+				</ion-badge>
+				<ion-icon src="/assets/icon/bell.svg"></ion-icon>
+			</ion-buttons>
+			<ion-buttons slot="end" class="bell-button" (click)="onshowSearch()">
+				<ion-icon [src]="showSearch ? '/assets/icon/search-close.svg' : '/assets/icon/search-white.svg'">
+				</ion-icon>
+			</ion-buttons>
+		</ion-toolbar>
+		<ion-toolbar class="transparent ion-toolbar-title">
+			<ion-title>Manage Team Requests</ion-title>
+		</ion-toolbar>
+	</div>
+	<!-- Searchbar in a Toolbar -->
+	<ion-toolbar class="ion-toolbar-search" [ngClass]="{'ion-hide': !showSearch}">
+		<ion-searchbar #search class="search-big-text" placeholder="Enter username" (ionChange)="onSearch($event)"
+			searchIcon="/assets/icon/search-light.svg" [(ngModel)]="searchTerm">
+		</ion-searchbar>
+	</ion-toolbar>
+	<!-- Default Segment -->
+	<ion-segment (ionChange)="segmentChanged($event)" [(ngModel)]="selectTabs">
+		<ion-segment-button value="Pending">
+			<ion-label>Pending</ion-label>
+		</ion-segment-button>
+		<ion-segment-button value="Approved">
+			<ion-label>Approved</ion-label>
+		</ion-segment-button>
+		<ion-segment-button value="Rejected">
+			<ion-label>Rejected</ion-label>
+		</ion-segment-button>
+	</ion-segment>
+	<ion-toolbar class="transparent ion-toolbar-checkbox">
+		<ion-item lines="none" *ngIf="selectTabs == 'Pending' && items && items.length > 0">
+			<ion-label>Select All</ion-label>
+			<ion-checkbox class="custom-checkbox" slot="start" [(ngModel)]="selectedAll">
+			</ion-checkbox>
+		</ion-item>
+		<ion-buttons slot="end" class="ion-activatable ripple-parent sort-icon" (click)="sortItem(sortIcon)">
+			<ion-icon [src]="sortIcon ? '/assets/icon/sort-desc.svg' : '/assets/icon/sort-asc.svg'"></ion-icon>
+			<ion-ripple-effect type="unbounded"></ion-ripple-effect>
+		</ion-buttons>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content>
+	<ion-grid class="ion-no-padding">
+		<ion-row>
+			<ion-col size="12">
+				<div *ngIf="selectTabs == 'Pending'">
+					<ion-list class="item-list" *ngIf="items && items.length > 0; else empty">
+						<ion-item button detail="false" *ngFor="let item of items">
+							<ion-label class="ion-text-wrap">
+								<ion-text>
+									<h3 class="title">{{item.firstName}} {{item.middleName}} {{item.lastName}}</h3>
+								</ion-text>
+								<ion-text>
+									{{transformDate(item.requestedDateTime, displayDateFormat)}}
+									{{transformDate(item.requestedDateTime, displayTimeFormat)}}
+								</ion-text>
+							</ion-label>
+							<ion-checkbox class="custom-checkbox" slot="end" [checked]="selectedAll" [value]="item.id"
+								(ionChange)="onCheckBoxChange($event)"></ion-checkbox>
+						</ion-item>
+					</ion-list>
+					<ng-template #empty>
+						<ion-card class="ion-card ion-text-center">
+							<ion-card-header>
+								<ion-card-title class="ion-card-header">
+									No pending requests to approve.
+								</ion-card-title>
+							</ion-card-header>
+						</ion-card>
+					</ng-template>
+				</div>
+				<div *ngIf="selectTabs == 'Approved'">
+					<ion-list class="item-list" *ngIf="items && items.length > 0; else empty">
+						<ion-item button detail *ngFor="let item of items" (click)="onViewDetails(item)">
+							<ion-label class="ion-text-wrap">
+								<ion-text>
+									<h3 class="title">{{item.firstName}} {{item.middleName}} {{item.lastName}}</h3>
+								</ion-text>
+								<ion-text>
+									{{transformDate(item.requestedDateTime, displayDateFormat)}}
+									{{transformDate(item.requestedDateTime, displayTimeFormat)}}
+								</ion-text>
+							</ion-label>
+						</ion-item>
+					</ion-list>
+					<ng-template #empty>
+						<ion-card class="ion-card ion-text-center">
+							<ion-card-header>
+								<ion-card-title class="ion-card-header">
+									No approved request found
+								</ion-card-title>
+							</ion-card-header>
+						</ion-card>
+					</ng-template>
+				</div>
+				<div *ngIf="selectTabs == 'Rejected'">
+					<ion-list class="item-list" *ngIf="items && items.length > 0; else empty">
+						<ion-item button detail *ngFor="let item of items" (click)="onViewDetails(item)">
+							<ion-label class="ion-text-wrap">
+								<ion-text>
+									<h3 class="title">{{item.firstName}} {{item.middleName}} {{item.lastName}}</h3>
+								</ion-text>
+								<ion-text>
+									{{transformDate(item.requestedDateTime, displayDateFormat)}}
+									{{transformDate(item.requestedDateTime, displayTimeFormat)}}
+								</ion-text>
+							</ion-label>
+						</ion-item>
+					</ion-list>
+					<ng-template #empty>
+						<ion-card class="ion-card ion-text-center">
+							<ion-card-header>
+								<ion-card-title class="ion-card-header">
+									No rejected request found
+								</ion-card-title>
+							</ion-card-header>
+						</ion-card>
+					</ng-template>
+				</div>
+			</ion-col>
+		</ion-row>
+	</ion-grid>
+</ion-content>
+
+<!-- Footer without a border -->
+<ion-footer class="ion-no-border ion-footer-button" *ngIf="selectTabs == 'Pending'">
+	<ion-button type="button" expand="block" class="btn-gradient" (click)="onViewAndApprove()"
+		[disabled]="!(itemId.length > 0)" *ngIf="itemId.length > 0">
+		View Details & Approve
+	</ion-button>
+</ion-footer>

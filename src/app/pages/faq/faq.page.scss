@@ -1,0 +1,102 @@
+ion-header {
+	box-shadow: 0px 13px 20px #00000040;
+
+	.ion-gradient {
+		background: transparent
+			linear-gradient(
+				180deg,
+				var(--color-26235d) 0%,
+				var(--color-de1b54) 100%
+			)
+			0% 0% no-repeat padding-box;
+		box-shadow: 0px 5px 15px #26235d29;
+		opacity: 1;
+	}
+
+	ion-toolbar.transparent {
+		--background: transparent;
+	}
+
+	.ion-toolbar-title {
+		ion-title {
+			font: var(--font-style-normal) normal var(--font-weight-normal)
+				var(--font-size-24) / var(--line-spacing-30)
+				var(--ion-font-family);
+			letter-spacing: var(--character-spacing-0);
+			color: var(--color-ffffff);
+			white-space: normal;
+			text-align: center;
+			padding-inline: 24px;
+		}
+	}
+
+	.ion-toolbar-search {
+		padding-top: 0px;
+		ion-searchbar {
+			--box-shadow: none;
+			--color: var(--color-26235d);
+			--placeholder-color: var(--color-26235d);
+		}
+	}
+
+	.ion-toolbar-sort {
+		--background: var(--color-26235d) 0% 0% no-repeat padding-box;
+
+		ion-select {
+			padding-inline: 24px;
+			padding-left: 34px;
+		}
+
+		/* Set the text color */
+		ion-select::part(text) {
+			font: var(--font-style-normal) normal var(--font-weight-bold)
+				var(--font-size-16) / 22px var(--ion-font-family);
+			letter-spacing: var(--character-spacing-0);
+			color: var(--color-ffffff);
+		}
+
+		/* Set the icon color and opacity */
+		ion-select::part(icon) {
+			color: #fff;
+			opacity: 1;
+			padding: 4px;
+		}
+	}
+}
+
+ion-card {
+	box-shadow: none;
+	margin: 0;
+	padding: 16px;
+	border-radius: 0px;
+
+	ion-card-title {
+		font: var(--font-style-normal) normal var(--font-weight-bold)
+			var(--font-size-16) / 22px var(--ion-font-family);
+		letter-spacing: var(--character-spacing-0);
+		color: var(--color-5f5f5f);
+		padding-bottom: 12px;
+	}
+
+	ion-card-content {
+		font: var(--font-style-normal) normal var(--font-weight-normal)
+			var(--font-size-14) / var(--line-spacing-20) var(--ion-font-family);
+		letter-spacing: var(--character-spacing-0);
+		color: var(--color-26235d);
+		padding-bottom: 8px;
+	}
+}
+
+ion-card.white {
+	background: var(--color-ffffff) 0% 0% no-repeat padding-box;
+	ion-card-title {
+		border-bottom: 2px solid var(--color-eeeeee);
+	}
+}
+
+ion-card.gray {
+	background: var(--color-eeeeee) 0% 0% no-repeat padding-box;
+	ion-card-title {
+		border-bottom: 2px solid var(--color-ffffff);
+	}
+}

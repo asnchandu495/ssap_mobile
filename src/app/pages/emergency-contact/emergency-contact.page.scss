@@ -1,0 +1,99 @@
+.ion-header-transparent {
+	background: transparent
+		linear-gradient(180deg, var(--color-26235d) 0%, #4d215c 100%);
+	padding-bottom: 10px;
+
+	.ion-toolbar-title {
+		ion-title {
+			font: var(--font-style-normal) normal var(--font-weight-normal)
+				var(--font-size-24) / var(--line-spacing-30)
+				var(--ion-font-family);
+			letter-spacing: var(--character-spacing-0);
+			color: var(--color-ffffff);
+			text-align: center;
+		}
+
+		ion-title.ios {
+			padding-inline: 0px;
+		}
+	}
+	.ion-toolbar-searchbar {
+		ion-searchbar {
+			--background: #f6f9f5 0% 0% no-repeat padding-box;
+			--border-radius: 30px;
+			margin-top: 10px;
+			margin-bottom: 10px;
+			font: var(--font-style-normal) normal var(--font-weight-medium)
+				var(--font-size-14) / 12px var(--ion-font-family);
+			letter-spacing: var(--character-spacing-0);
+			--placeholder-color: var(--color-26235d);
+			--placeholder-opacity: 0.5;
+			text-align: left;
+			text-transform: capitalize;
+		}
+
+		ion-text {
+			font: var(--font-style-normal) normal var(--font-weight-medium)
+				var(--font-size-14) / var(--line-spacing-20)
+				var(--ion-font-family);
+			letter-spacing: var(--character-spacing-0);
+			color: var(--color-ffffff);
+			opacity: 0.6;
+		}
+	}
+}
+
+// Collapse Card
+.ion-card {
+	background: var(--color-ffffff) 0% 0% no-repeat padding-box;
+	box-shadow: 0px 11px 28px #56c59626;
+	border-radius: 20px;
+	margin-top: 20px;
+
+	.ion-card-header {
+		font: var(--font-style-normal) normal var(--font-weight-bold)
+			var(--font-size-16) / 22px var(--ion-font-family);
+		letter-spacing: var(--character-spacing-0);
+		color: var(--color-26235d);
+		text-transform: capitalize;
+		padding-inline: 25px;
+
+		ion-icon {
+			float: right;
+		}
+	}
+
+	.ion-card-header.ion-no-padding {
+		padding-inline: 0px;
+	}
+
+	.collpase {
+		height: 0;
+		overflow: hidden;
+		font-size: 14px;
+		transition: height 0.5s ease;
+		padding-inline: 25px;
+
+		.lines {
+			border-top: 2px solid #c5c7c5;
+			margin: 0;
+		}
+
+		.number-link {
+			font: var(--font-style-normal) normal var(--font-weight-bold)
+				var(--font-size-24) / 40px var(--ion-font-family);
+			color: var(--color-26235d);
+			letter-spacing: 4.8px;
+			text-decoration: none;
+		}
+	}
+}
+
+.ion-card.active {
+	.ion-card-header {
+		ion-icon {
+			transition-duration: 0.5s;
+			transform: rotate(180deg);
+		}
+	}
+}

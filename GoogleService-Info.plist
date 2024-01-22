@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>364597125111-50lf2fdqch83n2573brkblbkhomg3lto.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.364597125111-50lf2fdqch83n2573brkblbkhomg3lto</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBtY7V5gpxuGDMyM4v8CuJ6d03QChlX-CI</string>
+	<key>GCM_SENDER_ID</key>
+	<string>364597125111</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.sumeru.ssap</string>
+	<key>PROJECT_ID</key>
+	<string>ssap-sumeru</string>
+	<key>STORAGE_BUCKET</key>
+	<string>ssap-sumeru.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:364597125111:ios:63c69e03b1b5b958ac58f2</string>
+</dict>
+</plist>
